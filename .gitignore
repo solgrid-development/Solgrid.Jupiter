@@ -1,0 +1,21 @@
+# Main branch: ignore everything, whitelist what we publish
+*
+
+# Published files
+!src/
+!src/**
+!README.md
+!LICENSE
+!.gitignore
+!.editorconfig
+!Directory.Build.props
+!docs/
+!docs/**
+!.github/
+!.github/**
+
+# Standard .NET filters inside src/
+src/**/bin/
+src/**/obj/
+src/**/.vs/
+src/**/*.user
