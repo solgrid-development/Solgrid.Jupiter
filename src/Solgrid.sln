@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solgrid.Jupiter", "Solgrid.Jupiter\Solgrid.Jupiter.csproj", "{65C2F080-BAC8-46F4-A4F8-D34836BCF4EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solgrid.Jupiter.Tests", "Solgrid.Jupiter.Tests\Solgrid.Jupiter.Tests.csproj", "{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{65C2F080-BAC8-46F4-A4F8-D34836BCF4EA}.Release|x64.Build.0 = Release|Any CPU
 		{65C2F080-BAC8-46F4-A4F8-D34836BCF4EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{65C2F080-BAC8-46F4-A4F8-D34836BCF4EA}.Release|x86.Build.0 = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|x64.Build.0 = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F55B74D-3ADD-447F-AB78-EACF664B6CA3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
