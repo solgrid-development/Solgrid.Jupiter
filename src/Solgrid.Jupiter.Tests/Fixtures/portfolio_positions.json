@@ -1,0 +1,77 @@
+{
+  "date": 1710000000000,
+  "owner": "BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV",
+  "fetcherReports": [
+    {
+      "id": "jupiter-exchange",
+      "status": "succeeded",
+      "duration": 120
+    },
+    {
+      "id": "jupiter-governance",
+      "status": "failed",
+      "duration": 45,
+      "error": "timeout"
+    }
+  ],
+  "elements": [
+    {
+      "type": "multiple",
+      "label": "Wallet",
+      "platformId": "native-stake",
+      "name": "Native Stake",
+      "networkId": "solana",
+      "value": 1713.4,
+      "data": {
+        "assets": [
+          {
+            "type": "token",
+            "networkId": "solana",
+            "value": 1713.4,
+            "attributes": {},
+            "data": {
+              "address": "So11111111111111111111111111111111111111112",
+              "amount": 10.0,
+              "price": 171.34
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "trade",
+      "label": "LimitOrder",
+      "platformId": "jupiter-exchange",
+      "networkId": "solana",
+      "value": 500.0,
+      "data": {
+        "inputAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGCkZwyTDt1v",
+        "outputAddress": "So11111111111111111111111111111111111111112",
+        "initialInputAmount": 500.0,
+        "withdrawnOutputAmount": 0,
+        "inputPrice": 1.0,
+        "outputPrice": 171.34,
+        "filledPercentage": 0.0
+      }
+    }
+  ],
+  "duration": 450,
+  "tokenInfo": {
+    "solana": {
+      "So11111111111111111111111111111111111111112": {
+        "address": "So11111111111111111111111111111111111111112",
+        "name": "Wrapped SOL",
+        "symbol": "SOL",
+        "decimals": 9,
+        "logoURI": "https://example.com/sol.png",
+        "tags": ["verified"]
+      },
+      "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
+        "address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+        "name": "Jupiter",
+        "symbol": "JUP",
+        "decimals": 6
+      }
+    }
+  }
+}

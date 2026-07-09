@@ -1,0 +1,39 @@
+{
+  "mode": "ultra",
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "1000000000000000",
+  "outAmount": "103643000000",
+  "inUsdValue": 103643.0,
+  "outUsdValue": 103643.0,
+  "priceImpact": 0.0,
+  "swapUsdValue": 103643.0,
+  "otherAmountThreshold": "103643000000",
+  "swapMode": "ExactIn",
+  "slippageBps": 0,
+  "routePlan": [
+    {
+      "percent": 100,
+      "bps": 10000,
+      "swapInfo": {
+        "ammKey": "5zpyutJu9ee6jFymDGoK7F6S5Kczqtc9FomP3ueKuyA9",
+        "label": "Whirlpools",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "1000000000000000",
+        "outAmount": "103643000000"
+      }
+    }
+  ],
+  "feeMint": "So11111111111111111111111111111111111111112",
+  "feeBps": 2,
+  "router": "metis",
+  "transaction": "",
+  "gasless": false,
+  "requestId": "d71f2c9e-1111-2222-3333-444455556666",
+  "totalTime": 55,
+  "taker": "GkwFnmMDvn3HGMpJpWBg8tgJxr3NxNvg3AXxvXVPbRGJ",
+  "errorCode": 1,
+  "errorMessage": "Insufficient funds",
+  "error": "Insufficient funds"
+}

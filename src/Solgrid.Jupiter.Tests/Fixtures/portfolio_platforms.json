@@ -1,0 +1,183 @@
+[
+  {
+    "id": "jupiter-exchange",
+    "name": "Jupiter",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-exchange.webp",
+    "description": "Jupiter is building the infrastructure for an open financial future. With over $1 trillion in annual volume, Jupiter delivers a unified superapp experience that is simple to use, built to last, and proven at scale by operating a full-stack onchain product suite spanning self-custody, spot, perpetuals, lend, stake, stablecoin, token creation, prediction markets, developer APIs",
+    "defiLlamaId": "jupiter",
+    "isDeprecated": false,
+    "tokens": [
+      "27G8MtK7VtTcCHkpASjSDdkWWYfoqT6ggEuKidVJidD4",
+      "jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v",
+      "JuprjznTrTSp2UFa3ZBUFgwdAmtZCq4MQCwysN55USD"
+    ],
+    "tags": [
+      "dapp",
+      "lending",
+      "trading",
+      "stablecoin",
+      "defi",
+      "lst",
+      "wallet"
+    ],
+    "links": {
+      "website": "https://jup.ag/",
+      "discord": "https://discord.gg/jup",
+      "telegram": null,
+      "twitter": "https://x.com/JupiterExchange",
+      "github": "https://github.com/jup-ag",
+      "medium": null,
+      "documentation": "https://station.jup.ag/"
+    }
+  },
+  {
+    "id": "jupiter-governance",
+    "name": "Jupiter DAO",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-governance.webp",
+    "description": "The first voting platform for Cats in history.",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "dao",
+      "dapp"
+    ],
+    "links": {
+      "website": "https://vote.jup.ag/",
+      "discord": null,
+      "telegram": null,
+      "twitter": "https://x.com/jup_dao",
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-jupuary",
+    "name": "Jupiter Jupuary",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-jupuary.webp",
+    "description": "Jupuary is Jupiter\u0027s annual airdrop event for their governance token.",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "dao"
+    ],
+    "links": {
+      "website": "https://jupuary.jup.ag/",
+      "discord": null,
+      "telegram": null,
+      "twitter": null,
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-launchpad",
+    "name": "Jupiter Launchpad",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-launchpad.webp",
+    "description": "Ultimate decentralised distribution stack",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "tool"
+    ],
+    "links": {
+      "website": "https://lfg.jup.ag/",
+      "discord": null,
+      "telegram": null,
+      "twitter": null,
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-mobile",
+    "name": "Jupiter Mobile",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-mobile.webp",
+    "description": "The Most Powerful Mobile App in Crypto. Available on iOS \u0026 Android.",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "wallet"
+    ],
+    "links": {
+      "website": "https://jup.ag/mobile",
+      "discord": null,
+      "telegram": null,
+      "twitter": "https://x.com/jup_mobile",
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-offerbook",
+    "name": "Jupiter Offerbook",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-offerbook.webp",
+    "description": null,
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "defi",
+      "dapp"
+    ],
+    "links": {
+      "website": "https://offerbook.jup.ag/",
+      "discord": null,
+      "telegram": null,
+      "twitter": "https://x.com/jup_offerbook",
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-pm",
+    "name": "Jupiter Predict",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-pm.webp",
+    "description": "Jupiter Prediction Market, trade on real-world events.",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "dapp",
+      "prediction"
+    ],
+    "links": {
+      "website": "https://jup.ag/prediction",
+      "discord": "https://discord.gg/jup",
+      "telegram": null,
+      "twitter": "https://x.com/jup_predict",
+      "github": "https://github.com/jup-ag",
+      "medium": null,
+      "documentation": null
+    }
+  },
+  {
+    "id": "jupiter-wallet",
+    "name": "Jupiter Wallet",
+    "image": "https://raw.githubusercontent.com/jup-ag/platform-list/main/img/jupiter-wallet.webp",
+    "description": "The most powerful trading wallet on Solana.",
+    "defiLlamaId": null,
+    "isDeprecated": false,
+    "tokens": null,
+    "tags": [
+      "wallet"
+    ],
+    "links": {
+      "website": "https://chromewebstore.google.com/detail/Jupiter%20Wallet/iledlaeogohbilgbfhmbgkgmpplbfboh",
+      "discord": null,
+      "telegram": null,
+      "twitter": null,
+      "github": null,
+      "medium": null,
+      "documentation": null
+    }
+  }
+]

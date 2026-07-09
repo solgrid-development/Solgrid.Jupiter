@@ -1,0 +1,77 @@
+{
+  "swapMode": "ExactIn",
+  "inputMint": "So11111111111111111111111111111111111111112",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "1000000",
+  "outAmount": "103643",
+  "priceImpactPct": "0.0016748944698231306",
+  "routePlan": [
+    {
+      "percent": 100,
+      "bps": 10000,
+      "usdValue": 0.10363037473585741,
+      "swapInfo": {
+        "ammKey": "5zpyutJu9ee6jFymDGoK7F6S5Kczqtc9FomP3ueKuyA9",
+        "label": "Whirlpools",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+        "inAmount": "999800",
+        "outAmount": "3357995876"
+      }
+    },
+    {
+      "percent": 100,
+      "bps": 10000,
+      "usdValue": 0.10363037473585741,
+      "swapInfo": {
+        "ammKey": "Af79A1Nmsp2FwPoPXcVYG2GFCBv1fjm9BFZoTGyBrh3Z",
+        "label": "Meteora",
+        "inputMint": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+        "outputMint": "METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m",
+        "inAmount": "3357995876",
+        "outAmount": "3214054"
+      }
+    },
+    {
+      "percent": 100,
+      "bps": 10000,
+      "usdValue": 0.10363037473585741,
+      "swapInfo": {
+        "ammKey": "GQ3jSrukbvKT7Y6ppt6a7EUpCSrY2iirqZceB8NkaUsY",
+        "label": "Saros",
+        "inputMint": "METAewgxyPbgwsseH8T16a39CQ5VyVxZi9zXiDPY18m",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "3214054",
+        "outAmount": "103643"
+      }
+    }
+  ],
+  "feeMint": "So11111111111111111111111111111111111111112",
+  "feeBps": 2,
+  "platformFee": {
+    "feeBps": 2,
+    "feeMint": "So11111111111111111111111111111111111111112"
+  },
+  "swapType": "aggregator",
+  "router": "dflow",
+  "guaranteedPrice": false,
+  "gasless": false,
+  "jitOptimized": false,
+  "signatureFeeLamports": 0,
+  "signatureFeePayer": null,
+  "prioritizationFeeLamports": 0,
+  "prioritizationFeePayer": null,
+  "rentFeeLamports": 0,
+  "rentFeePayer": null,
+  "requestId": "01a06b19-555f-730e-ad1a-8cc0343f169c",
+  "taker": null,
+  "transaction": null,
+  "slippageBps": 0,
+  "otherAmountThreshold": "103643",
+  "inUsdValue": 0.10345709501954521,
+  "outUsdValue": 0.10363037473585741,
+  "swapUsdValue": 0.10363037473585741,
+  "priceImpact": 0.16748944698231305,
+  "mode": "ultra",
+  "totalTime": 102
+}

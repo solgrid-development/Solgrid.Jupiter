@@ -1,0 +1,18 @@
+{
+  "status": "Success",
+  "signature": "4xK9nPqR2sTvW8yZaBcDeFgHjKlMnOpQrStUvWxYzAbCdEfGhJkLmNoPqRsT",
+  "slot": "310456789",
+  "code": 0,
+  "totalInputAmount": "1000000",
+  "totalOutputAmount": "103512",
+  "inputAmountResult": "1000000",
+  "outputAmountResult": "103616",
+  "swapEvents": [
+    {
+      "inputMint": "So11111111111111111111111111111111111111112",
+      "inputAmount": "1000000",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputAmount": "103616"
+    }
+  ]
+}
