@@ -252,14 +252,6 @@ public sealed class JupiterSwapClient : IDisposable
     {
         // TODO: honor Retry-After once the API starts sending it consistently
         var response = await SendCoreAsync(method, url, jsonBody, cancellationToken).ConfigureAwait(false);
-        if (response.StatusCode is HttpStatusCode.BadGateway or HttpStatusCode.ServiceUnavailable)
-        {
-            response.Dispose();
-            _logger.LogWarning("Jupiter upstream error {StatusCode}, retrying once", (int)response.StatusCode);
-            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken).ConfigureAwait(false);
-            response = await SendCoreAsync(method, url, jsonBody, cancellationToken).ConfigureAwait(false);
-        }
-
         if (response.StatusCode != HttpStatusCode.TooManyRequests)
             return response;
 
