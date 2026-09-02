@@ -293,7 +293,7 @@ public sealed class JupiterSwapClient : IDisposable
             ? reset - DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             : reset;
 
-        return TimeSpan.FromSeconds(Math.Clamp(seconds, 0, 30));
+        return TimeSpan.FromSeconds(Math.Clamp(seconds, 0.5, 10));
     }
 
     private async Task ThrottleAsync(CancellationToken cancellationToken)
