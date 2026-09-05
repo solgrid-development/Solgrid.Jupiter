@@ -54,3 +54,18 @@ public enum TriggerChallengeType
     Message,
     Transaction
 }
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerOrderType
+{
+    Single,
+    Oco,
+    Otoco
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerDepositOrderType
+{
+    Price,
+    Dca
+}

@@ -68,11 +68,59 @@ public sealed class JupiterTriggerClient : IDisposable
         return JsonDefaults.Deserialize<TriggerVerifyResponse>(json);
     }
 
+    public async Task<TriggerVaultResponse?> GetVaultAsync(CancellationToken cancellationToken = default)
+    {
+        EnsureAuthenticated();
+
+        try
+        {
+            var json = await SendAsync(HttpMethod.Get, BuildUrl("/vault", null), null, cancellationToken)
+                .ConfigureAwait(false);
+            return JsonDefaults.Deserialize<TriggerVaultResponse>(json);
+        }
+        catch (JupiterApiException ex) when (ex.StatusCode == 404)
+        {
+            // no vault yet, caller should hit RegisterVaultAsync
+            return null;
+        }
+    }
+
+    public async Task<TriggerVaultResponse> RegisterVaultAsync(CancellationToken cancellationToken = default)
+    {
+        EnsureAuthenticated();
+
+        var json = await SendAsync(HttpMethod.Get, BuildUrl("/vault/register", null), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerVaultResponse>(json);
+    }
+
+    public async Task<CraftDepositResponse> CraftDepositAsync(CraftDepositRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+        if (request.OrderType == TriggerDepositOrderType.Dca && request.OrderSubType.HasValue)
+            throw new ArgumentException("OrderSubType must be null for dca deposits.", nameof(request));
+        if (request.OrderType == TriggerDepositOrderType.Price && !request.OrderSubType.HasValue)
+            throw new ArgumentException("OrderSubType is required for price deposits.", nameof(request));
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl("/deposit/craft", null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<CraftDepositResponse>(json);
+    }
+
     public void Dispose()
     {
         if (_ownsHttpClient)
             _httpClient.Dispose();
         _throttleGate.Dispose();
+    }
+
+    private void EnsureAuthenticated()
+    {
+        if (string.IsNullOrEmpty(_options.AuthToken))
+            throw new InvalidOperationException(
+                "Trigger v2 requires a JWT: call GetChallengeAsync, sign it, then VerifyAsync, and set options.AuthToken.");
     }
 
     private string BuildUrl(string path, string? query)
