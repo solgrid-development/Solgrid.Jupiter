@@ -14,6 +14,7 @@ Jupiter is the main DEX aggregator on Solana, but its official SDKs target TypeS
 | Price V3 | `GET /price/v3` | `GetPricesAsync` |
 | Tokens V2 | `GET /search`, `GET /tag`, `GET /{category}/{interval}`, `GET /recent` | `SearchTokensAsync`, `GetTokensByTagAsync`, `GetTopTokensAsync`, `GetRecentTokensAsync` |
 | Portfolio V1 (beta) | `GET /positions/{address}`, `GET /platforms`, `GET /staked-jup/{address}` | `GetPortfolioAsync`, `GetPlatformsAsync`, `GetStakedJupAsync` |
+| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync` |
 
 ## Getting started
 
@@ -144,13 +145,63 @@ var staked = await client.GetStakedJupAsync("WALLET_ADDRESS");
 Console.WriteLine($"staked JUP: {staked.StakedAmount}");
 ```
 
+### Trigger V2: auth, vault and deposits
+
+Limit orders and DCA live under `/trigger/v2` and use a separate
+`JupiterTriggerClient`. Auth is challenge-response: the wallet signs a
+message, the API returns a JWT valid for 24h (no refresh endpoint — re-run
+the flow when it expires). Deposits go into a Privy-managed vault shared by
+all your orders.
+
+```csharp
+using System.Text;
+using Solgrid.Jupiter;
+using Solgrid.Jupiter.Models;
+using Solnet.Wallet.Utilities;
+
+var options = new JupiterTriggerClientOptions
+{
+    ApiKey = Environment.GetEnvironmentVariable("JUPITER_API_KEY")
+};
+using var trigger = new JupiterTriggerClient(options);
+
+var challenge = await trigger.GetChallengeAsync(account.PublicKey.Key);
+var signature = account.Sign(Encoding.UTF8.GetBytes(challenge.Challenge!));
+var verify = await trigger.VerifyAsync(new TriggerVerifyRequest
+{
+    Type = TriggerChallengeType.Message,
+    WalletPubkey = account.PublicKey.Key,
+    Signature = Encoders.Base58.EncodeData(signature)
+});
+options.AuthToken = verify.Token;
+
+// null when the wallet has no vault yet
+var vault = await trigger.GetVaultAsync() ?? await trigger.RegisterVaultAsync();
+
+var deposit = await trigger.CraftDepositAsync(new CraftDepositRequest
+{
+    InputMint    = "So11111111111111111111111111111111111111112",
+    OutputMint   = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    UserAddress  = account.PublicKey.Key,
+    Amount       = "110000000",   // 0.11 SOL; orders have a 10 USD minimum
+    OrderType    = TriggerDepositOrderType.Price,
+    OrderSubType = TriggerOrderType.Single
+});
+```
+
+`deposit.Transaction` is an unsigned v0 transaction — sign it with your
+wallet; the signed tx plus `deposit.RequestId` are then consumed by the
+order create calls. Price order and DCA endpoints are work in progress,
+see issue #1.
+
 ## Rate limits
 
 Keyless access works at 0.5 RPS; a free API key from the
 [Jupiter Developer Portal](https://developers.jup.ag/portal) raises it to
 1 RPS (higher tiers available). The client throttles requests to
 `MinRequestInterval` and retries once on HTTP 429. Tokens V2 and Portfolio
-require an API key.
+require an API key; Trigger V2 works keyless at reduced limits but the JWT
+flow is the same either way.
 
 ## Status
 

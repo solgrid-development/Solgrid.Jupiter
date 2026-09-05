@@ -18,6 +18,7 @@ specs and verified against live API responses.
 | Price V3 | `GET /price/v3` | `GetPricesAsync` |
 | Tokens V2 | `GET /search`, `GET /tag`, `GET /{category}/{interval}`, `GET /recent` | `SearchTokensAsync`, `GetTokensByTagAsync`, `GetTopTokensAsync`, `GetRecentTokensAsync` |
 | Portfolio V1 (beta) | `GET /positions/{address}`, `GET /platforms`, `GET /staked-jup/{address}` | `GetPortfolioAsync`, `GetPlatformsAsync`, `GetStakedJupAsync` |
+| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync` |
 
 ## Usage
 

@@ -1,0 +1,6 @@
+{
+  "error": "Request validation failed",
+  "details": {
+    "type": "Invalid option: expected one of \"message\"|\"transaction\""
+  }
+}
