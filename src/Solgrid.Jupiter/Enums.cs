@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using Solgrid.Jupiter.Internal;
+
 namespace Solgrid.Jupiter;
 
 public enum SwapMode
@@ -43,4 +46,11 @@ public enum TokenInterval
     OneHour,
     SixHours,
     TwentyFourHours
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerChallengeType
+{
+    Message,
+    Transaction
 }
