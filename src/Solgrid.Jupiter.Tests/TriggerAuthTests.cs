@@ -127,6 +127,9 @@ public class TriggerAuthTests
         });
 
         Assert.StartsWith("eyJhbGciOiJIUzI1NiIs", response.Token);
+        // live api adds authMode next to the token, extension data must absorb it
+        Assert.NotNull(response.AdditionalProperties);
+        Assert.True(response.AdditionalProperties!.ContainsKey("authMode"));
     }
 
     [Fact]

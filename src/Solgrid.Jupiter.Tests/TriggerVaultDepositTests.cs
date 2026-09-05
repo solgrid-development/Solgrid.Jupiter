@@ -77,7 +77,7 @@ public class TriggerVaultDepositTests
 
         var request = Assert.Single(handler.Requests);
         Assert.Equal(BaseUrl + "/vault/register", request.RequestUri!.ToString());
-        Assert.Equal("3f2a1b0c-9d8e-4f7a-b6c5-d4e3f2a1b0c9", vault.PrivyVaultId);
+        Assert.Equal("x7qm2p9rk4vt8wz1nb3jc5yd6e", vault.PrivyVaultId);
     }
 
     [Fact]
@@ -124,9 +124,9 @@ public class TriggerVaultDepositTests
         var response = await client.CraftDepositAsync(SampleDeposit());
 
         Assert.True(response.HasTransaction);
-        Assert.Equal("01234567-89ab-cdef-0123-456789abcdef", response.RequestId);
+        Assert.Equal("0c7f7fb7-96a5-4d65-84f9-15e943d742b0", response.RequestId);
         Assert.Equal("7nE9GJoYHNmtaQvTQpota3KV2oz4pQ2dA6nvYK8EUJHV", response.ReceiverAddress);
-        Assert.Equal("1000000000", response.Amount);
+        Assert.Equal("110000000", response.Amount);
         Assert.Equal(9, response.TokenDecimals);
         Assert.False(string.IsNullOrEmpty(response.InputTokenAccount));
     }

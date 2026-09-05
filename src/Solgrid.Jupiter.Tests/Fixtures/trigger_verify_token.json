@@ -1,3 +1,4 @@
 {
+  "authMode": "access_only",
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3YWxsZXRQdWJrZXkiOiJCUTcyblN2OWYzUFJ5UktDQm5ITFZyZXJydjM3Q1lUSG01aDNzOVZTR1FEViIsImlhdCI6MTc1NzA4NzE2MSwiZXhwIjoxNzU3MTczNTYxfQ.qZx8-sample-signature-not-a-real-jwt"
 }
