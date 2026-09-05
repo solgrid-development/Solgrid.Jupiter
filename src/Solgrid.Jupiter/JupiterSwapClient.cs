@@ -170,6 +170,28 @@ public sealed class JupiterSwapClient : IDisposable
         return JsonDefaults.Deserialize<StakedJupResponse>(json);
     }
 
+    public async Task<UltraOrderResponse> GetUltraOrderAsync(UltraOrderRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var query = new QueryBuilder();
+        request.BuildQuery(query);
+
+        var json = await SendAsync(HttpMethod.Get, BuildUrl(_options.UltraApiUrl, "/order", query.ToString()), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<UltraOrderResponse>(json);
+    }
+
+    public async Task<UltraExecuteResponse> UltraExecuteAsync(UltraExecuteRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl(_options.UltraApiUrl, "/execute", null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<UltraExecuteResponse>(json);
+    }
+
     public void Dispose()
     {
         if (_ownsHttpClient)

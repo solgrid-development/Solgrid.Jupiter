@@ -10,6 +10,8 @@ public sealed class JupiterSwapClientOptions
 
     public string PortfolioApiUrl { get; set; } = "https://api.jup.ag/portfolio/v1";
 
+    public string UltraApiUrl { get; set; } = "https://api.jup.ag/ultra/v1";
+
     public string? ApiKey { get; set; }
 
     public TimeSpan MinRequestInterval { get; set; } = TimeSpan.FromMilliseconds(2000);
