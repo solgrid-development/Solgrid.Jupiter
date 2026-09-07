@@ -1,0 +1,42 @@
+{
+  "orders": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "orderType": "single",
+      "orderState": "open",
+      "rawState": "open",
+      "userPubkey": "BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV",
+      "privyWalletPubkey": "7nE9GJoYHNmtaQvTQpota3KV2oz4pQ2dA6nvYK8EUJHV",
+      "inputMint": "So11111111111111111111111111111111111111112",
+      "initialInputAmount": "1000000000",
+      "remainingInputAmount": "1000000000",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "triggerMint": "So11111111111111111111111111111111111111112",
+      "triggerCondition": "above",
+      "triggerPriceUsd": 200.0,
+      "slippageBps": 100,
+      "expiresAt": 1704067200000,
+      "createdAt": 1704000000000,
+      "updatedAt": 1704000000000,
+      "triggeredAt": null,
+      "outputAmount": null,
+      "inputUsed": null,
+      "fillPercent": null,
+      "events": [
+        {
+          "type": "deposit",
+          "timestamp": 1704000000000,
+          "txSignature": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9dXGfJw8Lf3FQ6oQvS9nN2tS1vV7uVe3XyYz9pL2mK4rT1",
+          "mint": "So11111111111111111111111111111111111111112",
+          "amount": "1000000000",
+          "state": "success"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "total": 50,
+    "limit": 20,
+    "offset": 0
+  }
+}
