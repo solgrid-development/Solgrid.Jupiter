@@ -109,6 +109,113 @@ public sealed class JupiterTriggerClient : IDisposable
         return JsonDefaults.Deserialize<CraftDepositResponse>(json);
     }
 
+    public async Task<TriggerOrderResponse> CreatePriceOrderAsync(CreatePriceOrderRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+        ValidatePriceOrder(request);
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl("/orders/price", null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerOrderResponse>(json);
+    }
+
+    public async Task<TriggerOrderUpdateResponse> UpdatePriceOrderAsync(
+        string orderId,
+        UpdatePriceOrderRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+        if (request.TrailingBps is < 50 or > 9000)
+            throw new ArgumentOutOfRangeException(nameof(request), "TrailingBps must be between 50 and 9000.");
+        if (request is { TpPriceUsd: { } tp, SlPriceUsd: { } sl } && tp <= sl)
+            throw new ArgumentException("TpPriceUsd must be greater than SlPriceUsd.", nameof(request));
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var path = "/orders/price/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Patch, BuildUrl(path, null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerOrderUpdateResponse>(json);
+    }
+
+    public async Task<TriggerCancelResponse> CancelPriceOrderAsync(string orderId, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        EnsureAuthenticated();
+
+        var path = "/orders/price/cancel/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl(path, null), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerCancelResponse>(json);
+    }
+
+    public async Task<TriggerTxSignatureResponse> ConfirmCancelPriceOrderAsync(
+        string orderId,
+        ConfirmCancelRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var path = "/orders/price/confirm-cancel/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl(path, null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerTxSignatureResponse>(json);
+    }
+
+    public async Task<TriggerHistoryResponse> GetOrderHistoryAsync(
+        TriggerHistoryQuery? query = null,
+        CancellationToken cancellationToken = default)
+    {
+        EnsureAuthenticated();
+        if (query?.Limit is < 1 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(query), "Limit must be between 1 and 100.");
+
+        var builder = new QueryBuilder();
+        query?.BuildQuery(builder);
+
+        var json = await SendAsync(HttpMethod.Get, BuildUrl("/orders/history", builder.ToString()), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerHistoryResponse>(json);
+    }
+
+    private static void ValidatePriceOrder(CreatePriceOrderRequest request)
+    {
+        switch (request.OrderType)
+        {
+            case TriggerOrderType.Single:
+                if (!request.TriggerCondition.HasValue)
+                    throw new ArgumentException("TriggerCondition is required for single orders.", nameof(request));
+                if (request.TriggerPriceUsd.HasValue == request.TrailingBps.HasValue)
+                    throw new ArgumentException(
+                        "Single orders need exactly one of TriggerPriceUsd or TrailingBps.", nameof(request));
+                break;
+            case TriggerOrderType.Oco:
+                if (!request.TpPriceUsd.HasValue || !request.SlPriceUsd.HasValue)
+                    throw new ArgumentException("Oco orders need TpPriceUsd and SlPriceUsd.", nameof(request));
+                break;
+            case TriggerOrderType.Otoco:
+                if (!request.TriggerCondition.HasValue || !request.TriggerPriceUsd.HasValue)
+                    throw new ArgumentException(
+                        "Otoco orders need TriggerCondition and a parent TriggerPriceUsd.", nameof(request));
+                if (!request.TpPriceUsd.HasValue || !request.SlPriceUsd.HasValue)
+                    throw new ArgumentException("Otoco orders need TpPriceUsd and SlPriceUsd.", nameof(request));
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(request), "Unknown order type.");
+        }
+
+        if (request is { TpPriceUsd: { } tp, SlPriceUsd: { } sl } && tp <= sl)
+            throw new ArgumentException("TpPriceUsd must be greater than SlPriceUsd.", nameof(request));
+        if (request.TrailingBps is < 50 or > 9000)
+            throw new ArgumentOutOfRangeException(nameof(request), "TrailingBps must be between 50 and 9000.");
+    }
+
     public void Dispose()
     {
         if (_ownsHttpClient)
