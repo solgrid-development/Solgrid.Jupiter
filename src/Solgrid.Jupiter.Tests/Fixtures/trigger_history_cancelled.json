@@ -3,8 +3,8 @@
     {
       "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
       "orderType": "single",
-      "orderState": "open",
-      "rawState": "open",
+      "orderState": "cancelled",
+      "rawState": "cancelled",
       "userPubkey": "BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV",
       "privyWalletPubkey": "7nE9GJoYHNmtaQvTQpota3KV2oz4pQ2dA6nvYK8EUJHV",
       "inputMint": "So11111111111111111111111111111111111111112",
@@ -13,19 +13,29 @@
       "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       "triggerMint": "So11111111111111111111111111111111111111112",
       "triggerCondition": "above",
-      "triggerPriceUsd": 10000,
-      "slippageBps": 100,
+      "triggerPriceUsd": 10500,
+      "slippageBps": 150,
       "expiresAt": 1788663167123,
       "createdAt": 1788655966838,
-      "updatedAt": 1788655967846,
+      "updatedAt": 1788655972581,
       "triggeredAt": null,
       "outputAmount": null,
       "inputUsed": null,
       "fillPercent": 0,
-      "trailingBps": null,
-      "highWatermark": null,
-      "lowWatermark": null,
       "events": [
+        {
+          "type": "withdrawal",
+          "timestamp": 1788655972581,
+          "txSignature": "3PDo3pMJLqvAfNXwYjY7BSP57ZNQ5DgYDeK6xYszUVMnXGfJw8Lf3FQ6oQvS9nN2tS1vV7uVe3XyYz9pL2mK4rT2",
+          "mint": "So11111111111111111111111111111111111111112",
+          "amount": "110183711",
+          "state": "success"
+        },
+        {
+          "type": "cancelled",
+          "timestamp": 1788655972581,
+          "state": "success"
+        },
         {
           "type": "deposit",
           "timestamp": 1788655967846,
