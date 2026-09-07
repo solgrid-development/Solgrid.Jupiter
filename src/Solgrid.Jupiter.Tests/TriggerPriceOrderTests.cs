@@ -293,18 +293,42 @@ public class TriggerPriceOrderTests
         Assert.Equal("single", order.OrderType);
         Assert.Equal("open", order.OrderState);
         Assert.Equal("open", order.RawState);
-        Assert.Equal("1000000000", order.RemainingInputAmount);
-        Assert.Equal(200.0, order.TriggerPriceUsd);
-        Assert.Equal(1704067200000, order.ExpiresAt);
+        Assert.Equal("110000000", order.RemainingInputAmount);
+        Assert.Equal(10000, order.TriggerPriceUsd);
+        Assert.Equal(1788663167123, order.ExpiresAt);
         Assert.Null(order.TriggeredAt);
+        Assert.Equal(0, order.FillPercent);
+        Assert.Null(order.TrailingBps);
 
         var evt = Assert.Single(order.Events!);
         Assert.Equal("deposit", evt.Type);
         Assert.Equal("success", evt.State);
-        Assert.Equal("1000000000", evt.Amount);
+        Assert.Equal("110000000", evt.Amount);
 
-        Assert.Equal(50, response.Pagination!.Total);
+        Assert.Equal(1, response.Pagination!.Total);
         Assert.Equal(20, response.Pagination.Limit);
+    }
+
+    [Fact]
+    public async Task History_ParsesCancelledOrderWithEvents()
+    {
+        var handler = new FakeHttpHandler();
+        handler.Enqueue(HttpStatusCode.OK, Fixtures.Read("trigger_history_cancelled.json"));
+        using var client = new JupiterTriggerClient(AuthedOptions(), new HttpClient(handler));
+
+        var response = await client.GetOrderHistoryAsync(new TriggerHistoryQuery { State = TriggerHistoryState.Past });
+
+        var order = Assert.Single(response.Orders!);
+        Assert.Equal("cancelled", order.OrderState);
+        Assert.Equal("cancelled", order.RawState);
+        // update landed before the cancel: price 10000 -> 10500, slippage 100 -> 150
+        Assert.Equal(10500, order.TriggerPriceUsd);
+        Assert.Equal(150, order.SlippageBps);
+
+        Assert.Equal(3, order.Events!.Count);
+        Assert.Equal(new[] { "withdrawal", "cancelled", "deposit" }, order.Events.Select(e => e.Type).ToArray());
+        Assert.Equal("110183711", order.Events[0].Amount);
+        Assert.Null(order.Events[1].TxSignature);
     }
 
     [Fact]
