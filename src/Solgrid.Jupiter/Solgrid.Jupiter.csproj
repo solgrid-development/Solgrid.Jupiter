@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <PackageId>Solgrid.Jupiter</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Solgrid</Authors>
     <Company>Solgrid</Company>
     <Product>Solgrid.Jupiter</Product>
-    <Description>Jupiter DeFi API client for .NET on Solana: swap quotes (Swap V2 /order, /build, /execute), token prices (Price V3), token metadata (Tokens V2) and portfolio positions (Portfolio V1). Pure HTTP client on System.Text.Json with throttling, 429 retry and drift-tolerant models.</Description>
-    <PackageTags>solana;jupiter;defi;dex;swap;aggregator;price;tokens;portfolio;blockchain;crypto</PackageTags>
+    <Description>Jupiter DeFi API client for .NET on Solana: swaps (Swap V2 /order, /build, /execute and Ultra V1), limit orders and DCA (Trigger V2), token prices (Price V3), token metadata (Tokens V2) and portfolio positions (Portfolio V1). Pure HTTP client on System.Text.Json with throttling, 429 retry and drift-tolerant models.</Description>
+    <PackageTags>solana;jupiter;defi;dex;swap;aggregator;price;tokens;portfolio;trigger;limit-orders;dca;blockchain;crypto</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Lak1Lay/Solgrid.Jupiter</RepositoryUrl>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts</PackageOutputPath>
   </PropertyGroup>
 
@@ -23,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Link="LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
