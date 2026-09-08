@@ -5,12 +5,11 @@
 !src/
 !src/**
 !README.md
+!EXAMPLES.md
 !LICENSE
 !.gitignore
 !.editorconfig
 !Directory.Build.props
-!docs/
-!docs/**
 !.github/
 !.github/**
 
