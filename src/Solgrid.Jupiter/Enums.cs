@@ -98,3 +98,18 @@ public enum TriggerSortDirection
     Asc,
     Desc
 }
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum DcaOrderType
+{
+    TimeBased,
+    PriceConditional
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum DcaHistorySort
+{
+    UpdatedAt,
+    CreatedAt,
+    NextFillAt
+}
