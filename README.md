@@ -14,7 +14,7 @@ Jupiter is the main DEX aggregator on Solana, but its official SDKs target TypeS
 | Price V3 | `GET /price/v3` | `GetPricesAsync` |
 | Tokens V2 | `GET /search`, `GET /tag`, `GET /{category}/{interval}`, `GET /recent` | `SearchTokensAsync`, `GetTokensByTagAsync`, `GetTopTokensAsync`, `GetRecentTokensAsync` |
 | Portfolio V1 (beta) | `GET /positions/{address}`, `GET /platforms`, `GET /staked-jup/{address}` | `GetPortfolioAsync`, `GetPlatformsAsync`, `GetStakedJupAsync` |
-| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync` |
+| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft`, `POST /orders/price`, `PATCH /orders/price/{id}`, `POST /orders/price/cancel/{id}`, `POST /orders/price/confirm-cancel/{id}`, `GET /orders/history` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync`, `CreatePriceOrderAsync`, `UpdatePriceOrderAsync`, `CancelPriceOrderAsync`, `ConfirmCancelPriceOrderAsync`, `GetOrderHistoryAsync` |
 
 ## Getting started
 
@@ -145,11 +145,11 @@ var staked = await client.GetStakedJupAsync("WALLET_ADDRESS");
 Console.WriteLine($"staked JUP: {staked.StakedAmount}");
 ```
 
-### Trigger V2: auth, vault and deposits
+### Trigger V2: limit orders
 
-Limit orders and DCA live under `/trigger/v2` and use a separate
+Limit orders live under `/trigger/v2` and use a separate
 `JupiterTriggerClient`. Auth is challenge-response: the wallet signs a
-message, the API returns a JWT valid for 24h (no refresh endpoint — re-run
+message, the API returns a JWT valid for 24h (no refresh endpoint, re-run
 the flow when it expires). Deposits go into a Privy-managed vault shared by
 all your orders.
 
@@ -189,10 +189,62 @@ var deposit = await trigger.CraftDepositAsync(new CraftDepositRequest
 });
 ```
 
-`deposit.Transaction` is an unsigned v0 transaction — sign it with your
-wallet; the signed tx plus `deposit.RequestId` are then consumed by the
-order create calls. Price order and DCA endpoints are work in progress,
-see issue #1.
+`deposit.Transaction` is an unsigned transaction in legacy format (unlike
+the v0 transactions from the swap endpoints). Sign it with your wallet; the
+signed tx plus `deposit.RequestId` feed the create call:
+
+```csharp
+var order = await trigger.CreatePriceOrderAsync(new CreatePriceOrderRequest
+{
+    OrderType        = TriggerOrderType.Single,
+    DepositRequestId = deposit.RequestId!,
+    DepositSignedTx  = signedDepositTx,   // base64 of the signed deposit.Transaction
+    UserPubkey       = account.PublicKey.Key,
+    InputMint        = "So11111111111111111111111111111111111111112",
+    InputAmount      = "110000000",
+    OutputMint       = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    TriggerMint      = "So11111111111111111111111111111111111111112",
+    TriggerCondition = TriggerCondition.Above,
+    TriggerPriceUsd  = 200,               // sell SOL above $200
+    SlippageBps      = 100,
+    ExpiresAt        = DateTimeOffset.UtcNow.AddDays(7).ToUnixTimeMilliseconds()
+});
+// the deposit lands on-chain during this call; DepositConfirmed = true
+// means the order is live
+```
+
+`Oco` orders take `TpPriceUsd`/`SlPriceUsd` instead of a single trigger
+price, `Otoco` takes a parent trigger plus the TP/SL pair. A `Single` order
+becomes a trailing stop when you set `TrailingBps` (50-9000) instead of
+`TriggerPriceUsd`. Every order needs a future `ExpiresAt` in epoch
+milliseconds and a deposit worth at least 10 USD (validated at craft time
+already).
+
+Track, edit and cancel:
+
+```csharp
+var open = await trigger.GetOrderHistoryAsync(new TriggerHistoryQuery
+{
+    State = TriggerHistoryState.Active
+});
+
+await trigger.UpdatePriceOrderAsync(order.Id!, new UpdatePriceOrderRequest
+{
+    OrderType = TriggerOrderType.Single,
+    TriggerPriceUsd = 210
+});
+
+// cancel is two-step: fetch the withdrawal tx, sign it, confirm
+var cancel = await trigger.CancelPriceOrderAsync(order.Id!);
+var confirmed = await trigger.ConfirmCancelPriceOrderAsync(order.Id!, new ConfirmCancelRequest
+{
+    SignedTransaction = signedWithdrawalTx,   // cancel.Transaction, signed
+    CancelRequestId = cancel.RequestId!
+});
+// funds are back in the wallet once confirmed.TxSignature lands
+```
+
+DCA endpoints are work in progress, see issue #1.
 
 ## Rate limits
 
