@@ -1,0 +1,49 @@
+{
+  "orders": [
+    {
+      "id": "019f0530-36a7-77da-a38f-ed9414bb996b",
+      "requestId": "b7d1b2a2-c8b3-4c21-a938-d1499260d218",
+      "userPubkey": "8gs8rXavMQRqoAoMhCfo79r2wndgSn93FLSWErdHp82n",
+      "vaultPubkey": "66xK9AE6oFpGAyn9eCWE3LtYwUZKkeUxbfjFSNmFnkBo",
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "So11111111111111111111111111111111111111112",
+      "inputAmountInitial": "20000000",
+      "inputAmountRemaining": "20000000",
+      "amountPerRound": "10000000",
+      "outputAmountTotal": "0",
+      "inputAmountUsed": "0",
+      "orderType": "price_conditional",
+      "minPriceUsd": 50,
+      "maxPriceUsd": 1000,
+      "triggerMint": "So11111111111111111111111111111111111111112",
+      "retryWindowSeconds": 7200,
+      "jlEnabled": false,
+      "jlYieldUsd": null,
+      "numberOfRounds": 2,
+      "intervalSeconds": 86400,
+      "beginFillAt": "2026-06-26T20:27:46.015Z",
+      "nextFillAt": "2026-06-26T20:27:46.015Z",
+      "lastFillAt": null,
+      "roundsFilled": 0,
+      "fillPercent": 0,
+      "state": "active",
+      "displayState": "active",
+      "createdAt": "2026-06-26T18:27:53.665Z",
+      "updatedAt": "2026-06-26T18:27:54.529Z",
+      "events": [
+        {
+          "type": "deposit",
+          "timestamp": "2026-06-26T18:27:54.529Z",
+          "txSignature": "PPbp1QbbKDPjpHM3ScKyZBnCtLKKqmWwDeVj7USdBeEoNQsA1hkN35UQfrY2cQpyAB1pfVi9FdfciYdz7qUXBQA",
+          "inputAmount": "20000000",
+          "state": "success"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "total": 1,
+    "limit": 20,
+    "offset": 0
+  }
+}
