@@ -14,7 +14,7 @@ Jupiter is the main DEX aggregator on Solana, but its official SDKs target TypeS
 | Price V3 | `GET /price/v3` | `GetPricesAsync` |
 | Tokens V2 | `GET /search`, `GET /tag`, `GET /{category}/{interval}`, `GET /recent` | `SearchTokensAsync`, `GetTokensByTagAsync`, `GetTopTokensAsync`, `GetRecentTokensAsync` |
 | Portfolio V1 (beta) | `GET /positions/{address}`, `GET /platforms`, `GET /staked-jup/{address}` | `GetPortfolioAsync`, `GetPlatformsAsync`, `GetStakedJupAsync` |
-| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft`, `POST /orders/price`, `PATCH /orders/price/{id}`, `POST /orders/price/cancel/{id}`, `POST /orders/price/confirm-cancel/{id}`, `GET /orders/history` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync`, `CreatePriceOrderAsync`, `UpdatePriceOrderAsync`, `CancelPriceOrderAsync`, `ConfirmCancelPriceOrderAsync`, `GetOrderHistoryAsync` |
+| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft`, `POST /orders/price`, `PATCH /orders/price/{id}`, `POST /orders/price/cancel/{id}`, `POST /orders/price/confirm-cancel/{id}`, `GET /orders/history`, `POST /orders/dca`, `POST /orders/dca/cancel/{id}`, `POST /orders/dca/confirm-cancel/{id}`, `GET /orders/history/dca`, `GET /orders/history/dca/{id}` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync`, `CreatePriceOrderAsync`, `UpdatePriceOrderAsync`, `CancelPriceOrderAsync`, `ConfirmCancelPriceOrderAsync`, `GetOrderHistoryAsync`, `CreateDcaOrderAsync`, `CancelDcaOrderAsync`, `ConfirmCancelDcaOrderAsync`, `GetDcaHistoryAsync`, `GetDcaOrderAsync` |
 
 ## Getting started
 
@@ -145,9 +145,9 @@ var staked = await client.GetStakedJupAsync("WALLET_ADDRESS");
 Console.WriteLine($"staked JUP: {staked.StakedAmount}");
 ```
 
-### Trigger V2: limit orders
+### Trigger V2: limit orders and DCA
 
-Limit orders live under `/trigger/v2` and use a separate
+Limit orders and DCA live under `/trigger/v2` and use a separate
 `JupiterTriggerClient`. Auth is challenge-response: the wallet signs a
 message, the API returns a JWT valid for 24h (no refresh endpoint, re-run
 the flow when it expires). Deposits go into a Privy-managed vault shared by
@@ -244,7 +244,59 @@ var confirmed = await trigger.ConfirmCancelPriceOrderAsync(order.Id!, new Confir
 // funds are back in the wallet once confirmed.TxSignature lands
 ```
 
-DCA endpoints are work in progress, see issue #1.
+DCA splits one deposit into rounds that the Jupiter keeper swaps on a
+schedule. Same vault and auth, deposit is crafted with
+`TriggerDepositOrderType.Dca` and no subtype:
+
+```csharp
+var dcaDeposit = await trigger.CraftDepositAsync(new CraftDepositRequest
+{
+    InputMint   = "So11111111111111111111111111111111111111112",
+    OutputMint  = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    UserAddress = account.PublicKey.Key,
+    Amount      = "200000000",   // 0.2 SOL; every round needs at least 10 USD
+    OrderType   = TriggerDepositOrderType.Dca
+});
+// sign dcaDeposit.Transaction the same way as above
+
+var dca = await trigger.CreateDcaOrderAsync(new CreateDcaOrderRequest
+{
+    DepositRequestId = dcaDeposit.RequestId!,
+    DepositSignedTx  = signedDcaDepositTx,
+    UserPubkey       = account.PublicKey.Key,
+    InputMint        = "So11111111111111111111111111111111111111112",
+    OutputMint       = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    InputAmount      = "200000000",
+    OrderCount       = 2,        // rounds, minimum 2
+    IntervalSeconds  = 3600,     // 60 seconds to 1 year
+    OrderType        = DcaOrderType.TimeBased
+});
+
+var active = await trigger.GetDcaHistoryAsync(new DcaHistoryQuery
+{
+    State = TriggerHistoryState.Active
+});
+var one = await trigger.GetDcaOrderAsync(dca.Id!);   // roundsFilled, fillPercent, events
+```
+
+`PriceConditional` orders fill a round only while the USD price of
+`TriggerMint` stays inside `MinPriceUsd`/`MaxPriceUsd`. `BeginFillAt`
+(ISO-8601, up to 30 days out) delays the first round. `JlEnabled` with
+`JlMint` parks the idle stablecoin in Jupiter Lend between rounds
+(time-based orders with a supported stablecoin input only).
+
+DCA orders cannot be edited, only cancelled. Same two-step flow as limit
+orders, and the response tells you what comes back:
+
+```csharp
+var cancel = await trigger.CancelDcaOrderAsync(dca.Id!);
+// cancel.RefundAmount is the unfilled remainder, cancel.RoundsRemaining the skipped rounds
+var confirmed = await trigger.ConfirmCancelDcaOrderAsync(dca.Id!, new ConfirmCancelRequest
+{
+    SignedTransaction = signedWithdrawalTx,   // cancel.Transaction, signed
+    CancelRequestId = cancel.RequestId!
+});
+```
 
 ## Rate limits
 
