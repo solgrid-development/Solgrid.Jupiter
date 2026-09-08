@@ -18,7 +18,7 @@ specs and verified against live API responses.
 | Price V3 | `GET /price/v3` | `GetPricesAsync` |
 | Tokens V2 | `GET /search`, `GET /tag`, `GET /{category}/{interval}`, `GET /recent` | `SearchTokensAsync`, `GetTokensByTagAsync`, `GetTopTokensAsync`, `GetRecentTokensAsync` |
 | Portfolio V1 (beta) | `GET /positions/{address}`, `GET /platforms`, `GET /staked-jup/{address}` | `GetPortfolioAsync`, `GetPlatformsAsync`, `GetStakedJupAsync` |
-| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft`, `POST /orders/price`, `PATCH /orders/price/{id}`, `POST /orders/price/cancel/{id}`, `POST /orders/price/confirm-cancel/{id}`, `GET /orders/history` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync`, `CreatePriceOrderAsync`, `UpdatePriceOrderAsync`, `CancelPriceOrderAsync`, `ConfirmCancelPriceOrderAsync`, `GetOrderHistoryAsync` |
+| Trigger V2 | `POST /auth/challenge`, `POST /auth/verify`, `GET /vault`, `GET /vault/register`, `POST /deposit/craft`, `POST /orders/price`, `PATCH /orders/price/{id}`, `POST /orders/price/cancel/{id}`, `POST /orders/price/confirm-cancel/{id}`, `GET /orders/history`, `POST /orders/dca`, `POST /orders/dca/cancel/{id}`, `POST /orders/dca/confirm-cancel/{id}`, `GET /orders/history/dca`, `GET /orders/history/dca/{id}` | `JupiterTriggerClient`: `GetChallengeAsync`, `VerifyAsync`, `GetVaultAsync`, `RegisterVaultAsync`, `CraftDepositAsync`, `CreatePriceOrderAsync`, `UpdatePriceOrderAsync`, `CancelPriceOrderAsync`, `ConfirmCancelPriceOrderAsync`, `GetOrderHistoryAsync`, `CreateDcaOrderAsync`, `CancelDcaOrderAsync`, `ConfirmCancelDcaOrderAsync`, `GetDcaHistoryAsync`, `GetDcaOrderAsync` |
 
 ## Usage
 
