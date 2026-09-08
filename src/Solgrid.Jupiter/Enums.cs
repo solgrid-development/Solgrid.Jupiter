@@ -69,3 +69,32 @@ public enum TriggerDepositOrderType
     Price,
     Dca
 }
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerCondition
+{
+    Above,
+    Below
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerHistoryState
+{
+    Active,
+    Past
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerHistorySort
+{
+    UpdatedAt,
+    CreatedAt,
+    ExpiresAt
+}
+
+[JsonConverter(typeof(SnakeCaseEnumConverter))]
+public enum TriggerSortDirection
+{
+    Asc,
+    Desc
+}
