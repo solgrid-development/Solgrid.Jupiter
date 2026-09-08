@@ -184,6 +184,98 @@ public sealed class JupiterTriggerClient : IDisposable
         return JsonDefaults.Deserialize<TriggerHistoryResponse>(json);
     }
 
+    public async Task<TriggerTxSignatureResponse> CreateDcaOrderAsync(CreateDcaOrderRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+        ValidateDcaOrder(request);
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl("/orders/dca", null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerTxSignatureResponse>(json);
+    }
+
+    public async Task<DcaCancelResponse> CancelDcaOrderAsync(string orderId, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        EnsureAuthenticated();
+
+        var path = "/orders/dca/cancel/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl(path, null), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<DcaCancelResponse>(json);
+    }
+
+    public async Task<TriggerTxSignatureResponse> ConfirmCancelDcaOrderAsync(
+        string orderId,
+        ConfirmCancelRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureAuthenticated();
+
+        var body = JsonSerializer.Serialize(request, JsonDefaults.Options);
+        var path = "/orders/dca/confirm-cancel/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Post, BuildUrl(path, null), body, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<TriggerTxSignatureResponse>(json);
+    }
+
+    public async Task<DcaHistoryResponse> GetDcaHistoryAsync(
+        DcaHistoryQuery? query = null,
+        CancellationToken cancellationToken = default)
+    {
+        EnsureAuthenticated();
+        if (query?.Limit is < 1 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(query), "Limit must be between 1 and 100.");
+
+        var builder = new QueryBuilder();
+        query?.BuildQuery(builder);
+
+        var json = await SendAsync(HttpMethod.Get, BuildUrl("/orders/history/dca", builder.ToString()), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<DcaHistoryResponse>(json);
+    }
+
+    public async Task<DcaHistoryItem> GetDcaOrderAsync(string orderId, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+        EnsureAuthenticated();
+
+        var path = "/orders/history/dca/" + Uri.EscapeDataString(orderId);
+        var json = await SendAsync(HttpMethod.Get, BuildUrl(path, null), null, cancellationToken)
+            .ConfigureAwait(false);
+        return JsonDefaults.Deserialize<DcaHistoryItem>(json);
+    }
+
+    private static void ValidateDcaOrder(CreateDcaOrderRequest request)
+    {
+        if (request.OrderCount < 2)
+            throw new ArgumentOutOfRangeException(nameof(request), "OrderCount must be at least 2.");
+        if (request.IntervalSeconds is < 60 or > 31_536_000)
+            throw new ArgumentOutOfRangeException(nameof(request), "IntervalSeconds must be between 60 and 31536000.");
+        if (request.InputMint == request.OutputMint)
+            throw new ArgumentException("InputMint and OutputMint must be different.", nameof(request));
+
+        if (request.OrderType == DcaOrderType.PriceConditional)
+        {
+            if (string.IsNullOrEmpty(request.TriggerMint))
+                throw new ArgumentException("TriggerMint is required for price conditional orders.", nameof(request));
+            if (!request.MinPriceUsd.HasValue && !request.MaxPriceUsd.HasValue)
+                throw new ArgumentException("Price conditional orders need MinPriceUsd or MaxPriceUsd.", nameof(request));
+        }
+
+        if (request.JlEnabled == true)
+        {
+            if (request.OrderType == DcaOrderType.PriceConditional)
+                throw new ArgumentException("JlEnabled is only supported for time based orders.", nameof(request));
+            if (string.IsNullOrEmpty(request.JlMint))
+                throw new ArgumentException("JlMint is required when JlEnabled is set.", nameof(request));
+        }
+    }
+
     private static void ValidatePriceOrder(CreatePriceOrderRequest request)
     {
         switch (request.OrderType)
