@@ -13,6 +13,17 @@ surface ([Solnet.JupiterSwap](https://github.com/Bifrost-Technologies/Solnet.Jup
 retired), so I wrote this from the official OpenAPI specs and checked it
 against live API responses.
 
+## Demo app
+
+A GUI demo for this library lives in
+[@Zelwel0](https://github.com/Zelwel0)'s fork. Self-contained Windows build,
+no .NET needed: [release v0.2.0](https://github.com/Zelwel0/Solgrid.Jupiter/releases/tag/v0.2.0)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Zelwel0/Solgrid.Jupiter/demo/docs/demo-ultra-quote.png" width="49%" alt="Ultra quote with fee breakdown"/>
+  <img src="https://raw.githubusercontent.com/Zelwel0/Solgrid.Jupiter/demo/docs/demo-tokens.png" width="49%" alt="top organic tokens table"/>
+</p>
+
 ## Coverage
 
 Two clients, one per API base:
@@ -25,17 +36,6 @@ Two clients, one per API base:
 | Tokens V2 | `JupiterSwapClient` | search, tags, top lists, new tokens - metadata + safety metrics |
 | Portfolio V1 (beta) | `JupiterSwapClient` | Jupiter product positions, platforms, staked JUP |
 | Trigger V2 | `JupiterTriggerClient` | limit orders (single/OCO/OTOCO, trailing) and DCA: challenge-response auth, vault, deposits, create/update/cancel/history |
-
-## Demo app
-
-A GUI demo for this library lives in
-[@Zelwel0](https://github.com/Zelwel0)'s fork. Self-contained Windows build,
-no .NET needed: [release v0.2.0](https://github.com/Zelwel0/Solgrid.Jupiter/releases/tag/v0.2.0)
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Zelwel0/Solgrid.Jupiter/demo/docs/demo-ultra-quote.png" width="49%" alt="Ultra quote with fee breakdown"/>
-  <img src="https://raw.githubusercontent.com/Zelwel0/Solgrid.Jupiter/demo/docs/demo-tokens.png" width="49%" alt="top organic tokens table"/>
-</p>
 
 ## Quick start
 
